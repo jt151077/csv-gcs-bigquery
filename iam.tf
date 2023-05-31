@@ -45,27 +45,68 @@ resource "google_project_iam_member" "run_sa_eventreceiver" {
   member  = "serviceAccount:${google_service_account.run_sa.email}"
 }
 
+resource "google_project_iam_member" "run_artifactregistry_reader" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = var.project_id
+  role    = "roles/artifactregistry.reader"
+  member  = "serviceAccount:${google_service_account.run_sa.email}"
+}
+
+resource "google_project_iam_member" "run_logs_writer" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = var.project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.run_sa.email}"
+}
+
 
 # Service account for the CloudBuild trigger listening to github
 resource "google_service_account" "cloudbuild_service_account" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
   project    = local.project_id
   account_id = "deployer-sa"
 }
 
 resource "google_project_iam_member" "act_as" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
   project = local.project_id
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
 resource "google_project_iam_member" "logs_writer" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
   project = local.project_id
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
 resource "google_project_iam_member" "storage_admin" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
   project = local.project_id
   role    = "roles/storage.admin"
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+}
+
+
+# Service account for the CloudBuild trigger listening to github
+resource "google_project_iam_member" "storage_pubsub_publisher" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = local.project_id
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:service-${local.project_number}@gs-project-accounts.iam.gserviceaccount.com"
 }

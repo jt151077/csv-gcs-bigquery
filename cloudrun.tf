@@ -16,17 +16,17 @@
 
 
 resource "google_cloud_run_service" "run" {
-  name     = "tomra-cloudrun"
+  name     = "load-csv"
   project  = local.project_id
   location = local.project_default_region
 
   template {
     spec {
-      service_account_name = "${local.project_number}-compute@developer.gserviceaccount.com"
+      service_account_name = google_service_account.run_sa.email
       containers {
-        image = "europe-west1-docker.pkg.dev/tomra-demo/tomra-app/tomra-run:latest"
+        image = "europe-west1-docker.pkg.dev/jeremy-tkuhscmw/run-image/load-csv@sha256:b379f006b2169df8fd48b586800868552a178e9bc25ab3cd3d0ccb71de8a925f"
 
-        env {
+        /* env {
           name  = "MSG_SRC"
           value = "cloudrun"
         }
@@ -37,13 +37,7 @@ resource "google_cloud_run_service" "run" {
         env {
           name  = "POSTGRES_USER"
           value = var.db_user
-        }
-      }
-    }
-    metadata {
-      annotations = {
-        "autoscaling.knative.dev/maxScale"      = "100"
-        "run.googleapis.com/cloudsql-instances" = "${local.project_id}:${local.project_default_region}:${google_sql_database_instance.tomra-sql.name}"
+        }*/
       }
     }
   }

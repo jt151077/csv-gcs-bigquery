@@ -1,0 +1,13 @@
+substitutions:
+  _REGION: "europe-west1"
+  _PROJECT_ID: "csv-gcs-bigquery"
+steps:
+  # Build and tag using commit sha
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '.', '-t', '$_REGION-docker.pkg.dev/$_PROJECT_ID/run-image/load-csv:latest', '-f', 'Dockerfile']
+    dir: 'app'
+  # Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '$_REGION-docker.pkg.dev/$_PROJECT_ID/run-image/load-csv:latest']
+options:
+  logging: CLOUD_LOGGING_ONLY

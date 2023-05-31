@@ -4,10 +4,10 @@ substitutions:
 steps:
   # Build and tag using commit sha
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '.', '-t', '$_REGION-docker.pkg.dev/$_PROJECT_ID/html-nginx/load-csv:${COMMIT_SHA}', '-f', 'Dockerfile']
+    args: ['build', '.', '-t', '$_REGION-docker.pkg.dev/$_PROJECT_ID/run-image/load-csv:${COMMIT_SHA}', '-f', 'Dockerfile']
     dir: 'app'
   # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '$_REGION-docker.pkg.dev/$_PROJECT_ID/html-nginx/load-csv:${COMMIT_SHA}']
+    args: ['push', '$_REGION-docker.pkg.dev/$_PROJECT_ID/run-image/load-csv:${COMMIT_SHA}']
 options:
   logging: CLOUD_LOGGING_ONLY

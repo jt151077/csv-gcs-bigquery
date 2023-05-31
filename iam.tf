@@ -64,12 +64,6 @@ resource "google_project_iam_member" "logs_writer" {
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
-resource "google_project_iam_member" "artifactregistry_writer" {
-  project = local.project_id
-  role    = "roles/artifactregistry.writer"
-  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
-}
-
 resource "google_project_iam_member" "storage_admin" {
   project = local.project_id
   role    = "roles/storage.admin"

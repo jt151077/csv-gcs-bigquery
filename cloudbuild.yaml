@@ -1,6 +1,6 @@
 substitutions:
   _REGION: "europe-west1"
-  _PROJECT_ID: "csv-gcs-bigquery"
+  _PROJECT_ID: "jeremy-tkuhscmw"
 steps:
   # Build and tag using commit sha
   - name: 'gcr.io/cloud-builders/docker'

@@ -20,8 +20,6 @@ resource "google_cloudbuild_trigger" "deploy-from-github" {
   description = "Build artifcats from Github"
   filename    = "cloudbuild.yaml"
 
-  service_account = google_service_account.cloudbuild_service_account.id
-
   depends_on = [
     google_project_iam_member.act_as,
     google_project_iam_member.logs_writer

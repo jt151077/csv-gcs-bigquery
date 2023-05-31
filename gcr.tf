@@ -27,3 +27,16 @@ resource "google_artifact_registry_repository" "run-repo" {
   description   = "Docker repository"
   format        = "DOCKER"
 }
+
+resource "google_artifact_registry_repository_iam_member" "repo-iam" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+
+  provider   = google-beta
+  project    = local.project_id
+  location   = google_artifact_registry_repository.run-repo.location
+  repository = google_artifact_registry_repository.run-repo.name
+  role       = "roles/artifactregistry.writer"
+  member     = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+}

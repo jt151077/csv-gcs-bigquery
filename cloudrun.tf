@@ -29,22 +29,18 @@ resource "google_cloud_run_service" "run" {
   template {
     spec {
       service_account_name = google_service_account.run_sa.email
-      
+
       containers {
         image = "europe-west1-docker.pkg.dev/jeremy-tkuhscmw/run-image/load-csv@sha256:b379f006b2169df8fd48b586800868552a178e9bc25ab3cd3d0ccb71de8a925f"
 
-        /* env {
-          name  = "MSG_SRC"
-          value = "cloudrun"
+        env {
+          name  = "bqdestination"
+          value = "${google_bigquery_dataset.data_raw.dataset_id}.${google_bigquery_table.load_csv_data.table_id}"
         }
         env {
-          name  = "POSTGRES_PASSWORD"
-          value = data.google_kms_secret.sql_user_password.plaintext
+          name  = "gcpproject"
+          value = local.project_id
         }
-        env {
-          name  = "POSTGRES_USER"
-          value = var.db_user
-        }*/
       }
     }
   }

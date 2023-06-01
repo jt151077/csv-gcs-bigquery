@@ -72,7 +72,14 @@ resource "google_project_iam_member" "storage_admin" {
   member  = "serviceAccount:${google_service_account.run_sa.email}"
 }
 
-
+resource "google_project_iam_member" "bigquery_admin" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = var.project_id
+  role    = "roles/bigquery.admin"
+  member  = "serviceAccount:${google_service_account.run_sa.email}"
+}
 
 
 # Service account for the CloudBuild trigger listening to github

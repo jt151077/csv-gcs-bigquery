@@ -21,10 +21,14 @@ from google.cloud import storage
 
 from flask import Flask, request
 
+bqdestination = os.environ['bqdestination']
+gcpproject = os.environ['gcpproject']
 
 app = Flask(__name__)
 # [END eventarc_audit_storage_server]
 
+def write_csv_to_bq(df, table_id, project_id):
+  return pandas_gbq.to_gbq(df, table_id, project_id, if_exists='append')
 
 def read_csv_from_gcs(bucket_name, file_path):
   # Create a GCS client
@@ -51,18 +55,14 @@ def index():
     bucket = request.headers.get('Ce-Bucket')
     fil = (request.headers.get('Ce-Subject')).split('/')[1]
 
-    print(f"bucket: {bucket}")
-    print(f"fil: {fil}")
-
-
     # Read the CSV file and load it into a DataFrame
     df = read_csv_from_gcs(bucket, fil)
 
     # Print the DataFrame
     print(df)
+    print(write_csv_to_bq(df, bqdestination, gcpproject))
 
-    print(f"Detected change in Cloud Storage bucket: {bucket}")
-    return (f"Detected change in Cloud Storage bucket: {bucket}", 200)
+    return (f"Target BigQuery table updated: {bqdestination}", 200)
 # [END eventarc_audit_storage_handler]
 
 

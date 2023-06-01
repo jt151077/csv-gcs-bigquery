@@ -24,8 +24,6 @@ app = Flask(__name__)
 # [END eventarc_audit_storage_server]
 
 
-
-
 def read_csv_from_gcs(bucket_name, file_path):
   # Create a GCS client
   storage_client = storage.Client()

@@ -20,9 +20,16 @@ resource "google_cloud_run_service" "run" {
   project  = local.project_id
   location = local.project_default_region
 
+  lifecycle {
+    ignore_changes = [
+      template[0].spec[0].containers[0].image
+    ]
+  }
+
   template {
     spec {
       service_account_name = google_service_account.run_sa.email
+      
       containers {
         image = "europe-west1-docker.pkg.dev/jeremy-tkuhscmw/run-image/load-csv@sha256:b379f006b2169df8fd48b586800868552a178e9bc25ab3cd3d0ccb71de8a925f"
 

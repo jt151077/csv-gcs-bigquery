@@ -56,7 +56,7 @@ def index():
 
 
     # Read the CSV file and load it into a DataFrame
-    df = read_csv_from_gcs("jeremy-tkuhscmw-csv-input", file_path)
+    df = read_csv_from_gcs(bucket, fil)
 
     # Print the DataFrame
     print(df)

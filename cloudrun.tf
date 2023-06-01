@@ -31,7 +31,7 @@ resource "google_cloud_run_service" "run" {
       service_account_name = google_service_account.run_sa.email
 
       containers {
-        image = "europe-west1-docker.pkg.dev/jeremy-tkuhscmw/run-image/load-csv@sha256:b379f006b2169df8fd48b586800868552a178e9bc25ab3cd3d0ccb71de8a925f"
+        image = "gcr.io/cloudrun/hello"
 
         env {
           name  = "bqdestination"

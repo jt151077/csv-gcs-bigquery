@@ -114,7 +114,7 @@ resource "google_project_iam_member" "artifactregistry_reader" {
     google_project_service.gcp_services
   ]
   project = local.project_id
-  role    = "roles/artifactregistry.repoAdmin"
+  role    = "roles/artifactregistry.admin"
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 

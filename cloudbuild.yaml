@@ -9,19 +9,11 @@ steps:
   # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', '$_REGION-docker.pkg.dev/$_PROJECT_ID/run-image/load-csv:$COMMIT_SHA']
-  - name: hashicorp/terraform:1.4.6
+  - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        cd terraform
-        terraform init
-  - name: hashicorp/terraform:1.4.6
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        cd terraform
-        terraform apply -var "load-csv-sha=$COMMIT_SHA" -auto-approve 
+        gcloud run services update load-csv --project=$_PROJECT_ID --image=$_REGION-docker.pkg.dev/$_PROJECT_ID/run-image/load-csv:$COMMIT_SHA --region=$_REGION
 options:
   logging: CLOUD_LOGGING_ONLY

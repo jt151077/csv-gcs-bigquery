@@ -19,7 +19,6 @@ locals {
   project_id             = var.project_id
   project_number         = var.project_nmr
   project_default_region = var.project_default_region
-  load-csv-sha           = var.load-csv-sha
 
   gcp_service_list = [
     "artifactregistry.googleapis.com",

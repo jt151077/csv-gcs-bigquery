@@ -9,7 +9,3 @@ variable "project_nmr" {
 variable "project_default_region" {
   type = string
 }
-
-variable "load-csv-sha" {
-  type = string
-}

@@ -100,15 +100,23 @@ resource "google_project_iam_member" "storage_admin" {
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
-resource "google_project_iam_member" "compute_admin" {
+resource "google_project_iam_member" "artifactregistry_reader" {
   depends_on = [
     google_project_service.gcp_services
   ]
   project = local.project_id
-  role    = "roles/owner"
+  role    = "roles/artifactregistry.reader"
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
+resource "google_project_iam_member" "run_developer" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = local.project_id
+  role    = "roles/run.developer"
+  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+}
 
 
 # Service account for the CloudBuild trigger listening to github

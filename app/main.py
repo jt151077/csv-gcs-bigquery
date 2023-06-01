@@ -22,12 +22,40 @@ app = Flask(__name__)
 # [END eventarc_audit_storage_server]
 
 
+
+
+def read_csv_from_gcs(bucket_name, file_path):
+  # Create a GCS client
+  storage_client = storage.Client()
+
+  # Get the bucket and blob objects
+  bucket = storage_client.get_bucket(bucket_name)
+  blob = bucket.blob(file_path)
+
+  # Download the contents of the blob as a string
+  csv_data = blob.download_as_text()
+
+  # Read the CSV data into a Pandas DataFrame
+  dataframe = pd.read_csv(pd.StringIO(csv_data))
+  return dataframe
+
+
+
 # [START eventarc_audit_storage_handler]
 @app.route('/', methods=['POST'])
 def index():
     # Gets the GCS bucket name from the CloudEvent header
     # Example: "storage.googleapis.com/projects/_/buckets/my-bucket"
     bucket = request.headers.get('ce-subject')
+
+    print(f"Headers: {str(request.headers)}")
+
+
+    # Read the CSV file and load it into a DataFrame
+    df = read_csv_from_gcs("jeremy-tkuhscmw-csv-input", file_path)
+
+    # Print the DataFrame
+    print(df)
 
     print(f"Detected change in Cloud Storage bucket: {bucket}")
     return (f"Detected change in Cloud Storage bucket: {bucket}", 200)

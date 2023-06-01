@@ -13,8 +13,10 @@
 # limitations under the License.
 
 # [START eventarc_audit_storage_server]
+
 import os
 import pandas as pd
+from io import StringIO
 from google.cloud import storage
 
 from flask import Flask, request
@@ -36,7 +38,7 @@ def read_csv_from_gcs(bucket_name, file_path):
   csv_data = blob.download_as_text()
 
   # Read the CSV data into a Pandas DataFrame
-  dataframe = pd.read_csv(pd.StringIO(csv_data))
+  dataframe = pd.read_csv(StringIO(csv_data))
   return dataframe
 
 

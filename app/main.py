@@ -16,7 +16,7 @@
 
 import os
 import pandas as pd
-import pandas_gbqcdcs 
+import pandas_gbq 
 from io import StringIO
 from google.cloud import storage
 

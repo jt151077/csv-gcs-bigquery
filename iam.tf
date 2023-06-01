@@ -118,6 +118,14 @@ resource "google_project_iam_member" "artifactregistry_reader" {
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
+resource "google_project_iam_member" "containeranalysis_occurrences_viewer" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = local.project_id
+  role    = "roles/containeranalysis.occurrences.viewer"
+  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+}
 
 # Service account for the CloudBuild trigger listening to github
 resource "google_project_iam_member" "storage_pubsub_publisher" {

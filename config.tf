@@ -26,6 +26,7 @@ locals {
     "bigquery.googleapis.com",
     "bigquerystorage.googleapis.com",
     "cloudbuild.googleapis.com",
+    "containeranalysis.googleapis.com",
     "eventarc.googleapis.com",
     "iam.googleapis.com",
     "iamcredentials.googleapis.com",

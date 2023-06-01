@@ -14,6 +14,8 @@
 
 # [START eventarc_audit_storage_server]
 import os
+import pandas as pd
+from google.cloud import storage
 
 from flask import Flask, request
 
@@ -46,9 +48,11 @@ def read_csv_from_gcs(bucket_name, file_path):
 def index():
     # Gets the GCS bucket name from the CloudEvent header
     # Example: "storage.googleapis.com/projects/_/buckets/my-bucket"
-    bucket = request.headers.get('ce-subject')
+    bucket = request.headers.get('Ce-Bucket')
+    fil = (request.headers.get('Ce-Subject')).split('/')[1]
 
-    print(f"Headers: {str(request.headers)}")
+    print(f"bucket: {bucket}")
+    print(f"fil: {fil}")
 
 
     # Read the CSV file and load it into a DataFrame

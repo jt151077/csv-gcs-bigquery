@@ -105,7 +105,7 @@ resource "google_project_iam_member" "serviceusage_serviceUsageViewer" {
     google_project_service.gcp_services
   ]
   project = local.project_id
-  role    = "roles/serviceusage.serviceUsageViewer"
+  role    = "roles/serviceusage.serviceUsageAdmin"
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
@@ -124,6 +124,15 @@ resource "google_project_iam_member" "serviceAccountTokenCreator" {
   ]
   project = local.project_id
   role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+}
+
+resource "google_project_iam_member" "containeranalysis_admin" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = local.project_id
+  role    = "roles/containeranalysis.admin"
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 

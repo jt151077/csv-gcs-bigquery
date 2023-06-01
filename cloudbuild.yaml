@@ -15,14 +15,14 @@ steps:
       - '-c'
       - |
         gcloud artifacts docker images describe $_REGION-docker.pkg.dev/$_PROJECT_ID/run-image/load-csv:$COMMIT_SHA --format 'value(image_summary.digest)' > /workspace/sha
-  - name: hashicorp/terraform:1.4.4
+  - name: hashicorp/terraform:1.4.6
     entrypoint: 'sh'
     args:
       - '-c'
       - |
         cd terraform
         terraform init
-  - name: hashicorp/terraform:1.4.4
+  - name: hashicorp/terraform:1.4.6
     entrypoint: 'sh'
     args:
       - '-c'

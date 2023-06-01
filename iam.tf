@@ -100,6 +100,15 @@ resource "google_project_iam_member" "storage_admin" {
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
+resource "google_project_iam_member" "serviceusage_serviceUsageViewer" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = local.project_id
+  role    = "roles/serviceusage.serviceUsageViewer"
+  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+}
+
 resource "google_project_iam_member" "artifactregistry_reader" {
   depends_on = [
     google_project_service.gcp_services

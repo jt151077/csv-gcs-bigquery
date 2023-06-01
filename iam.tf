@@ -65,21 +65,13 @@ resource "google_project_iam_member" "run_logs_writer" {
 
 
 # Service account for the CloudBuild trigger listening to github
-resource "google_service_account" "cloudbuild_service_account" {
-  depends_on = [
-    google_project_service.gcp_services
-  ]
-  project    = local.project_id
-  account_id = "deployer-sa"
-}
-
 resource "google_project_iam_member" "act_as" {
   depends_on = [
     google_project_service.gcp_services
   ]
   project = local.project_id
   role    = "roles/iam.serviceAccountUser"
-  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+  member  = "serviceAccount:${local.project_number}@cloudbuild.gserviceaccount.com"
 }
 
 resource "google_project_iam_member" "logs_writer" {
@@ -88,25 +80,17 @@ resource "google_project_iam_member" "logs_writer" {
   ]
   project = local.project_id
   role    = "roles/logging.logWriter"
-  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+  member  = "serviceAccount:${local.project_number}@cloudbuild.gserviceaccount.com"
 }
 
-resource "google_project_iam_member" "storage_admin" {
-  depends_on = [
-    google_project_service.gcp_services
-  ]
-  project = local.project_id
-  role    = "roles/storage.admin"
-  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
-}
 
 resource "google_project_iam_member" "artifactregistry_reader" {
   depends_on = [
     google_project_service.gcp_services
   ]
   project = local.project_id
-  role    = "roles/artifactregistry.reader"
-  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+  role    = "roles/artifactregistry.writer"
+  member  = "serviceAccount:${local.project_number}@cloudbuild.gserviceaccount.com"
 }
 
 resource "google_project_iam_member" "run_developer" {
@@ -115,7 +99,7 @@ resource "google_project_iam_member" "run_developer" {
   ]
   project = local.project_id
   role    = "roles/run.developer"
-  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+  member  = "serviceAccount:${local.project_number}@cloudbuild.gserviceaccount.com"
 }
 
 

@@ -130,3 +130,12 @@ resource "google_project_iam_member" "storage_pubsub_publisher" {
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:service-${local.project_number}@gs-project-accounts.iam.gserviceaccount.com"
 }
+
+resource "google_project_iam_member" "pubsub_serviceAccountTokenCreator" {
+  depends_on = [
+    google_project_service.gcp_services
+  ]
+  project = local.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:service-${local.project_number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+}
